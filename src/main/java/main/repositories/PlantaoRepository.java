@@ -18,16 +18,20 @@ public interface PlantaoRepository extends JpaRepository<Plantao, Long> {
 	Plantao findByDia(Date dia);
 
 	Plantao findByHorario(LocalTime horario);
-
+	
 	@Query(value = "SELECT e FROM Enfermeiro e " + "WHERE e.id NOT IN "
 			+ "(SELECT ep.enfermeiro.id FROM EnfermeiroPlantao ep WHERE ep.plantao.id = :plantaoId)")
 	List<Enfermeiro> getEnfermeirosNaoRelacionadosAoPlantao(@Param("plantaoId") Long plantaoId);
 	@Query("SELECT COUNT(ep) FROM EnfermeiroPlantao ep " +
 		       "WHERE ep.enfermeiro.enfermeiroTecnico = :variavel1 " +
 		       "AND ep.plantao.dia = :variavel2")
+	
 		long countEnfermeirosByEnfermeiroTecnicoAndDia(
 		    @Param("variavel1") String variavel1,
 		    @Param("variavel2") LocalDate variavel2
-		); 
+		);
 	long countRelacionamentosByDia(LocalDate dia);
+	@Query("SELECT p FROM Plantao p ORDER BY p.dia DESC, p.horario DESC")
+	List<Plantao> findAllOrderByDiaAndHorarioDesc();
+
 }

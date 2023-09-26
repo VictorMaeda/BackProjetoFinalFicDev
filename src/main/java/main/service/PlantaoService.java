@@ -30,7 +30,7 @@ public class PlantaoService {
 	private RelacionamentoRepository relacionamentoRepository;
 
 	public List<Plantao> findAllPlantao() {
-		return repository.findAll();
+		return repository.findAllOrderByDiaAndHorarioDesc();
 	}
 
 	public void postEnfermeiro(Plantao plantao) {
@@ -73,22 +73,24 @@ public class PlantaoService {
 		var relacionamento = relacionamentoRepository.findEnfermeiroPlantaoByEnfermeiroPlantao(idEnfermeiro, idPlantao);
 		relacionamentoRepository.delete(relacionamento);
 	}
+	public void atualizarPlantoes() {
+		
+	}
 	//DashBoard
-	public DataDTO buscarBarsData(LocalDate data){
+	public DataDTO buscarBarsData(LocalDate data, int id){
 		long tecnicos = 0;
 		long enfermeiros = 0;
 		try {
 			tecnicos = repository.countEnfermeirosByEnfermeiroTecnicoAndDia("Técnico", data);
 			enfermeiros = repository.countEnfermeirosByEnfermeiroTecnicoAndDia("Enfermeiro", data);
 		}catch (Exception e) {}
-		return new DataDTO(data, enfermeiros, tecnicos, enfermeiros+tecnicos);
+		return new DataDTO(id, data, enfermeiros, tecnicos, enfermeiros+tecnicos);
 	}
 	public List<DataDTO> buscarBarsDataFromSemana(LocalDate dia) {
 	    List<DataDTO> lista = new ArrayList<>();
 	    dia = dia.minusDays(3);
 	    for (int i = 0; i < 7; i++) {
-	        System.out.println(dia);
-	        lista.add(buscarBarsData(dia));
+	        lista.add(buscarBarsData(dia, i));
 	        dia = dia.plusDays(1);
 	    }
 	    return lista;
@@ -96,16 +98,13 @@ public class PlantaoService {
 	public List<DataDTO> buscarBarsDataFromMes(LocalDate dia){
 		List<DataDTO> lista = new ArrayList<>();
 	    dia = dia.withDayOfMonth(1);
-	    System.out.println(dia);
 	    for (int i = 0; i < 30; i++) {
-	        System.out.println(dia);
-	        lista.add(buscarBarsData(dia));
+	        lista.add(buscarBarsData(dia, i));
 	        dia = dia.plusDays(1);
 	    }
 	    return lista;
 	}
-
-
+	
 
 	
 	

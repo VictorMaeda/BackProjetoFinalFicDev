@@ -78,8 +78,16 @@ public class EnfermeiroController {
 		return buscarPlantoes(idEnfermeiro);
 	}
 	//End-points para o dashBoard
-	@GetMapping("/dashBoard/pizzaData")
-	public PizzaDTO countTecnicos() {
+	@GetMapping("/DashBoard/PizzaData")
+	public PizzaDTO findPizzaData() {
 		return service.buscarPizzaData();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

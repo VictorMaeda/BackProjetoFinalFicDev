@@ -55,7 +55,10 @@ public class PlantaoController {
 //Remover escalado do plantao
 	@DeleteMapping("removerEnfermeiro/{idPlantao}/{idEnfermeiro}")
 	public List<?> removerEnfermeiro(@PathVariable long idPlantao, @PathVariable long idEnfermeiro) {
-		service.removerRelacionamentoEnfermeiroPlantao(idPlantao, idEnfermeiro);
+		try {
+			service.removerRelacionamentoEnfermeiroPlantao(idPlantao, idEnfermeiro);
+		}catch (Exception e) {
+		}
 		return buscarEscalados(idPlantao);
 	}
 
@@ -66,11 +69,11 @@ public class PlantaoController {
 		return service.getNaoEscalados(idPlantao);
 	}
 	//DashBoard
-	@GetMapping("DashBoard/barsData/semana/{dia}")
+	@GetMapping("DashBoard/BarsData/semana/{dia}")
 	public List<DataDTO> buscarBarsDataSemana(@PathVariable LocalDate dia) {
 		return service.buscarBarsDataFromSemana(dia);
 	}
-	@GetMapping("DashBoard/barsData/mes/{dia}")
+	@GetMapping("DashBoard/BarsData/mes/{dia}")
 	public List<DataDTO> buscarBarsDataMes(@PathVariable LocalDate dia) {
 		return service.buscarBarsDataFromMes(dia);
 	}
