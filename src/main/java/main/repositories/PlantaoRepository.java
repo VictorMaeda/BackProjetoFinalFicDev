@@ -19,6 +19,7 @@ public interface PlantaoRepository extends JpaRepository<Plantao, Long> {
 
 	Plantao findByHorario(LocalTime horario);
 	
+	Plantao findByDiaAndHorario(LocalDate dia, LocalTime horario);
 	@Query(value = "SELECT e FROM Enfermeiro e " + "WHERE e.id NOT IN "
 			+ "(SELECT ep.enfermeiro.id FROM EnfermeiroPlantao ep WHERE ep.plantao.id = :plantaoId)")
 	List<Enfermeiro> getEnfermeirosNaoRelacionadosAoPlantao(@Param("plantaoId") Long plantaoId);

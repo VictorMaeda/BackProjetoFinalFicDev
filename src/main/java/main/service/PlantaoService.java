@@ -34,8 +34,9 @@ public class PlantaoService {
 	}
 
 	public void postEnfermeiro(Plantao plantao) {
-		repository.save(plantao);
-
+		if(repository.findByDiaAndHorario(plantao.getDia(), plantao.getHorario()) != null){
+			repository.save(plantao);
+		}
 	}
 	
 	public void deletePlantao(long id) {

@@ -49,8 +49,10 @@ public class EnfermeiroService {
 	}
 
 	public ResponseEntity atualizarEnfermeiro(long idAtual, Enfermeiro enfermeiroNovo) {
-		if (repository.findByCorenAndNotIdEnfermeiro(enfermeiroNovo.getCoren(), idAtual) != null) {
-			return ResponseEntity.badRequest().body("Já existe outro enfermeiro com esse coren");
+		if (repository.findByCoren(enfermeiroNovo.getCoren()) != null) {
+			if(repository.findByCoren(enfermeiroNovo.getCoren()).getIdEnfermeiro() != idAtual) {
+				return ResponseEntity.badRequest().body("Já existe outro enfermeiro com esse coren");
+			}
 		}
 		Enfermeiro enfermeiroAtual = repository.findById(idAtual).get();
 		BeanUtils.copyProperties(enfermeiroNovo, enfermeiroAtual);

@@ -65,7 +65,7 @@ public class EnfermeiroController {
 	public List<?> buscarPlantoes(@PathVariable long id) {
 		return service.findPlantoes(id);
 	}
-
+	
 	@PostMapping("adicionarPlantao/{idPlantao}/{idEnfermeiro}")
 	public List<?> adicionarPlantao(@PathVariable long idPlantao, @PathVariable long idEnfermeiro) {
 		service.adicionarPlantao(idPlantao, idEnfermeiro);
