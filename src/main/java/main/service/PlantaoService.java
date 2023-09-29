@@ -33,10 +33,12 @@ public class PlantaoService {
 		return repository.findAllOrderByDiaAndHorarioDesc();
 	}
 
-	public void postEnfermeiro(Plantao plantao) {
-		if(repository.findByDiaAndHorario(plantao.getDia(), plantao.getHorario()) != null){
+	public List<Plantao> postEnfermeiro(Plantao plantao) {
+		if(repository.findByDiaAndHorario(plantao.getDia(), plantao.getHorario()) == null){
 			repository.save(plantao);
+			return findAllPlantao();
 		}
+		return null;
 	}
 	
 	public void deletePlantao(long id) {
