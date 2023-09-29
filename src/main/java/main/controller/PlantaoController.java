@@ -53,9 +53,8 @@ public class PlantaoController {
 		return service.getNaoEscalados(id);
 	}
 	@PostMapping("cadastrar")
-	public List<?> cadastrarPlantao(@RequestBody Plantao plantao) {
-		System.out.println("cadastrarPlantao()");
-		return service.postEnfermeiro(plantao);
+	public void cadastrarPlantao(@RequestBody Plantao plantao) {
+		 service.postEnfermeiro(plantao);
 	}
 //Remover escalado do plantao
 	@DeleteMapping("removerEnfermeiro/{idPlantao}/{idEnfermeiro}")
