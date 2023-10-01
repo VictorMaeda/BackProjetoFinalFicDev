@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import main.DTOs.PizzaDTO;
 import main.model.Enfermeiro;
-import main.model.PizzaDTO;
+import main.model.EnfermeiroPlantao;
+import main.model.Plantao;
 import main.repositories.EnfermeiroRepository;
 import main.service.EnfermeiroService;
 
@@ -63,19 +65,17 @@ public class EnfermeiroController {
 
 	@GetMapping("buscar/plantoes/{id}")
 	public List<?> buscarPlantoes(@PathVariable long id) {
-		return service.findPlantoes(id);
+		return service.findPlantoesAgendados(id);
 	}
 	
-	@PostMapping("adicionarPlantao/{idPlantao}/{idEnfermeiro}")
-	public List<?> adicionarPlantao(@PathVariable long idPlantao, @PathVariable long idEnfermeiro) {
-		service.adicionarPlantao(idPlantao, idEnfermeiro);
-		return buscarPlantoes(idEnfermeiro);
+	@PostMapping("adicionarPlantao/{idEnfermeiro}")
+	public ResponseEntity adicionarPlantao(@RequestBody Plantao plantao, @PathVariable long idEnfermeiro) {
+		return service.adicionarPlantao(plantao, idEnfermeiro);
 	}
 
 	@DeleteMapping("removerPlantao/{idPlantao}/{idEnfermeiro}")
-	public List<?> removerPlantao(@PathVariable long idPlantao, @PathVariable long idEnfermeiro) {
-		service.removerPlantao(idPlantao, idEnfermeiro);
-		return buscarPlantoes(idEnfermeiro);
+	public void removerPlantao(@PathVariable long idPlantao, @PathVariable long idEnfermeiro) {
+	 service.removerPlantao(idPlantao, idEnfermeiro);
 	}
 	//End-points para o dashBoard
 	@GetMapping("/DashBoard/PizzaData")

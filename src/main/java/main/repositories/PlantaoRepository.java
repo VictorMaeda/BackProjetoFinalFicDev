@@ -34,5 +34,5 @@ public interface PlantaoRepository extends JpaRepository<Plantao, Long> {
 	long countRelacionamentosByDia(LocalDate dia);
 	@Query("SELECT p FROM Plantao p ORDER BY p.dia DESC, p.horario DESC")
 	List<Plantao> findAllOrderByDiaAndHorarioDesc();
-
+	
 }

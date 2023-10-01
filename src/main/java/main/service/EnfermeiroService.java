@@ -1,5 +1,6 @@
 package main.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -7,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import main.model.DataDTO;
+import main.DTOs.DataDTO;
+import main.DTOs.PizzaDTO;
 import main.model.Enfermeiro;
-import main.model.PizzaDTO;
+import main.model.EnfermeiroPlantao;
 import main.model.Plantao;
 import main.repositories.EnfermeiroRepository;
 import main.repositories.PlantaoRepository;
@@ -63,20 +65,45 @@ public class EnfermeiroService {
 
 //Busca por nome
 	public List<Enfermeiro> getEnfermeiroNome(String nome) {
-		return repository.findByNomeContaining(nome);
+		return repository.findByNomeContainingIgnoreCase(nome);
 	}
 
 //Buscar plantoes de enfermeiro
-	public List<?> findPlantoes(long id) {
-		return repository.findById(id).get().getRelacionamentos();
+	public List<?> findPlantoesAgendados(long id) {
+		System.out.println(LocalDate.now());
+		return repository.findPlantoesByDia(id, LocalDate.now());
 	}
-
-	public void adicionarPlantao(long idPlantao, long idEnfermeiro) {
-		plantaoService.adicionarRelacionamentoEnfermeiroPlantao(idPlantao, idEnfermeiro);
+	public boolean validarNovoPlantao(Plantao plantao, Enfermeiro enfermeiro) {
+		List<EnfermeiroPlantao> lista =  enfermeiro.getRelacionamentos();
+		for (EnfermeiroPlantao enfermeiroPlantao : lista) {
+			if(enfermeiroPlantao.getPlantao().getDia().toString().equals(plantao.getDia().toString())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public ResponseEntity adicionarPlantao(Plantao plantao, long idEnfermeiro) {
+		System.out.println(idEnfermeiro);
+		try {
+			var enfermeiro = repository.findById(idEnfermeiro).get();
+			var booleano = validarNovoPlantao(plantao, enfermeiro);
+			if(booleano) {
+				plantaoService.postEnfermeiro(plantao);
+				plantao =  plantaoService.getPlantaoByDiaAndHorario(plantao);
+				System.out.println("IdPlantao: " + plantao.getIdPlantao());
+				plantaoService.adicionarRelacionamentoEnfermeiroPlantao(plantao.getIdPlantao(), idEnfermeiro);
+				return ResponseEntity.ok().build();
+			}else {
+				return ResponseEntity.badRequest().body("Esse enfermeiro já tem um plantão agendado nesse dia");
+			}
+		}catch (Exception e) {
+			return ResponseEntity.badRequest().body("Ocorreu um erro");
+		}
 	}
 
 	public void removerPlantao(long idPlantao, long idEnfermeiro) {
-		plantaoService.removerRelacionamentoEnfermeiroPlantao(idPlantao, idEnfermeiro);
+		var relacionamento = relacionamentoRepository.findEnfermeiroPlantaoByEnfermeiroPlantao(idEnfermeiro, idPlantao);
+		relacionamentoRepository.delete(relacionamento);
 	}
 	
 	public PizzaDTO buscarPizzaData() {

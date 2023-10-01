@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
-import main.model.DataDTO;
+import main.DTOs.DataDTO;
 import main.model.Enfermeiro;
 import main.model.EnfermeiroPlantao;
 import main.model.Plantao;
@@ -42,11 +42,16 @@ public class PlantaoService {
 	public void deletePlantao(long id) {
 		repository.deleteById(id);
 	}
-
 	public Plantao getPlantao(long id) {
 		return repository.findById(id).get();
 	}
-
+	public Plantao getPlantaoByDiaAndHorario(Plantao plantao) {
+		try {
+			return repository.findByDiaAndHorario(plantao.getDia(), plantao.getHorario());
+		}catch (Exception e) {
+			return null;
+		}
+	}
 	public void atualizarEnfermeiro(long idAtual, Plantao plantaoNovo) {
 		Plantao plantaoAtual = repository.findById(idAtual).get();
 		BeanUtils.copyProperties(plantaoNovo, plantaoAtual);
@@ -73,9 +78,6 @@ public class PlantaoService {
 	public void removerRelacionamentoEnfermeiroPlantao(long idPlantao, long idEnfermeiro) {
 		var relacionamento = relacionamentoRepository.findEnfermeiroPlantaoByEnfermeiroPlantao(idEnfermeiro, idPlantao);
 		relacionamentoRepository.delete(relacionamento);
-	}
-	public void atualizarPlantoes() {
-		
 	}
 	//DashBoard
 	public DataDTO buscarBarsData(LocalDate data, int id){

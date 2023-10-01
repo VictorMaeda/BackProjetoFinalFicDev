@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import main.model.DataDTO;
+import main.DTOs.DataDTO;
 import main.model.Plantao;
 import main.repositories.EnfermeiroRepository;
 import main.repositories.PlantaoRepository;
