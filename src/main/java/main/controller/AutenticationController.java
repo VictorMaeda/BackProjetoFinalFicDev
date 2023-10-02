@@ -20,7 +20,7 @@ import main.service.TokenService;
 @RestController
 @RequestMapping("/auth/")
 public class AutenticationController {
-
+String ola = "Ola";
 	@Autowired
 	private UsuarioRepository repository;
 
