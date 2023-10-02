@@ -24,5 +24,4 @@ public interface EnfermeiroRepository extends JpaRepository<Enfermeiro, Long> {
     
     @Query("SELECT r FROM Enfermeiro e JOIN e.relacionamentos r JOIN r.plantao p WHERE e.id = :idEnfermeiro AND p.dia >= :dia")
     public List<EnfermeiroPlantao> findPlantoesByDia(@Param("idEnfermeiro") long idEnfermeiro, @Param("dia") LocalDate dia);
-
 }

@@ -73,8 +73,14 @@ public class PlantaoController {
 		return service.getNaoEscalados(idPlantao);
 	}
 	//DashBoard
+	@GetMapping("DashBoard/BarsData/dia/{dia}")
+	public DataDTO buscarBarsDataDia(@PathVariable LocalDate dia) {
+		System.out.println("BUSCARBARSDATA()");
+		return service.buscarBarsData(dia, 0);
+	}
 	@GetMapping("DashBoard/BarsData/semana/{dia}")
 	public List<DataDTO> buscarBarsDataSemana(@PathVariable LocalDate dia) {
+		System.out.println("buscarBarsDataSemana()");
 		return service.buscarBarsDataFromSemana(dia);
 	}
 	@GetMapping("DashBoard/BarsData/mes/{dia}")
