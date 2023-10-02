@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import main.DTOs.DataDTO;
@@ -33,10 +34,12 @@ public class PlantaoService {
 		return repository.findAllOrderByDiaAndHorarioDesc();
 	}
 
-	public void postEnfermeiro(Plantao plantao) {
+	public ResponseEntity postEnfermeiro(Plantao plantao) {
 		if(repository.findByDiaAndHorario(plantao.getDia(), plantao.getHorario()) == null){
 			repository.save(plantao);
+			return ResponseEntity.ok().build();
 		}
+		return ResponseEntity.badRequest().body("Esse plantão já existe");
 	}
 	
 	public void deletePlantao(long id) {

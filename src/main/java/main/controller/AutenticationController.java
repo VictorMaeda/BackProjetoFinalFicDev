@@ -20,7 +20,6 @@ import main.service.TokenService;
 @RestController
 @RequestMapping("/auth/")
 public class AutenticationController {
-String ola = "Ola";
 	@Autowired
 	private UsuarioRepository repository;
 
@@ -36,20 +35,14 @@ String ola = "Ola";
 			return ResponseEntity.badRequest().body("Esse email já está sendo usado");
 		}
 		String encrypPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-		System.out.println("Email: "+user.getEmail());
 		user.setSenha(encrypPassword);
 		repository.save(user);
-		System.out.println("Login: "+user.getUsername());
-		System.out.println("Senha: "+user.getPassword());
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("login")
 	public ResponseEntity login(@RequestBody Usuario user) {
 		var password = new BCryptPasswordEncoder().encode(user.getPassword());
-		System.out.println("Usuário recebido:");
-		System.out.println("Login: "+user.getUsername());
-		System.out.println("Senha: "+password);
 		var usernamePassword = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 		var auth = authenticationManager.authenticate(usernamePassword);
 		String token = tokenService.generateToken(user);
